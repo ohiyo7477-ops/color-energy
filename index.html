@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>色彩能量測驗</title>
+  <meta name="description" content="挑選3種你最有感覺的色彩，了解你最近的身體能量狀態">
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d1a;
+      color: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", sans-serif;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* Galaxy nebula + milky way band */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        /* Main milky way band - diagonal streak from top-left to bottom-right */
+        linear-gradient(145deg,
+          transparent 15%,
+          rgba(80,60,140,0.08) 22%,
+          rgba(100,80,180,0.18) 28%,
+          rgba(140,100,200,0.25) 33%,
+          rgba(180,150,220,0.18) 38%,
+          rgba(120,100,200,0.22) 42%,
+          rgba(160,120,210,0.15) 48%,
+          rgba(100,80,180,0.10) 55%,
+          transparent 65%
+        ),
+        /* Milky way glow - soft white core */
+        linear-gradient(145deg,
+          transparent 20%,
+          rgba(200,200,240,0.06) 28%,
+          rgba(220,210,255,0.12) 34%,
+          rgba(240,230,255,0.08) 40%,
+          rgba(200,200,240,0.10) 46%,
+          rgba(220,210,255,0.05) 52%,
+          transparent 60%
+        ),
+        /* Surrounding nebula clouds */
+        radial-gradient(ellipse 100% 50% at 10% 15%, rgba(100,50,170,0.28) 0%, transparent 45%),
+        radial-gradient(ellipse 80% 40% at 90% 70%, rgba(120,50,150,0.22) 0%, transparent 40%),
+        radial-gradient(ellipse 70% 35% at 70% 25%, rgba(40,70,170,0.18) 0%, transparent 40%),
+        radial-gradient(ellipse 60% 30% at 30% 80%, rgba(60,90,190,0.15) 0%, transparent 35%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Star field - denser along the milky way band */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        /* Bright stars scattered */
+        radial-gradient(2px 2px at 32% 30%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2.2px 2.2px at 38% 35%, rgba(240,230,255,0.85), transparent),
+        radial-gradient(1.8px 1.8px at 42% 32%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 35% 38%, rgba(220,220,255,0.75), transparent),
+        radial-gradient(1.5px 1.5px at 45% 28%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 30% 42%, rgba(255,250,240,0.8), transparent),
+        radial-gradient(1.8px 1.8px at 48% 36%, rgba(240,240,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 40% 25%, rgba(255,255,255,0.65), transparent),
+        radial-gradient(2px 2px at 36% 45%, rgba(255,240,255,0.7), transparent),
+        radial-gradient(1.8px 1.8px at 50% 30%, rgba(255,255,255,0.75), transparent),
+        /* Medium stars along band */
+        radial-gradient(1.2px 1.2px at 28% 34%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.2px 1.2px at 44% 40%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1.2px 1.2px at 52% 26%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.2px 1.2px at 34% 48%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1.2px 1.2px at 46% 22%, rgba(255,255,255,0.5), transparent),
+        /* Scattered stars away from band */
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.2px 1.2px at 85% 45%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 5% 80%, rgba(255,255,255,0.45), transparent),
+        radial-gradient(1.5px 1.5px at 95% 10%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 75% 90%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1.2px 1.2px at 70% 20%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 60% 85%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1.2px 1.2px at 3% 40%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 92% 55%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 55% 55%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 65% 10%, rgba(255,255,255,0.4), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== Page Containers ===== */
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100dvh;
+      padding: 40px 20px 60px;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+    .page.active {
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
+    .page.visible {
+      opacity: 1;
+    }
+
+    /* ===== Typography ===== */
+    .title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+      text-align: center;
+      background: linear-gradient(135deg, #e8d0ff 0%, #ffffff 30%, #c8d8ff 55%, #f0d0ff 80%, #d0e8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 18px rgba(160,130,255,0.35));
+    }
+    .subtitle {
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: rgba(200,210,240,0.6);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .subtitle::before {
+      content: '✦ ';
+      font-size: 10px;
+      vertical-align: 1px;
+    }
+    .subtitle::after {
+      content: ' ✦';
+      font-size: 10px;
+      vertical-align: 1px;
+    }
+    .selection-count {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 20px;
+      min-height: 20px;
+      transition: color 0.3s;
+    }
+    .selection-count.ready {
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ===== Color Grid (Page 1) ===== */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 36px;
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+      position: relative;
+    }
+    @media (hover: hover) {
+      .color-cell:hover {
+        box-shadow: 0 0 16px rgba(255,255,255,0.25);
+        transform: scale(1.08);
+        z-index: 1;
+      }
+    }
+    .color-cell:active {
+      transform: scale(0.95);
+    }
+    .color-cell.selected {
+      box-shadow: 0 0 0 3px #ffffff, 0 0 20px rgba(255,255,255,0.35);
+      transform: scale(1.06);
+      z-index: 2;
+    }
+
+    /* ===== CTA Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 48px;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #a88baf, #7b9cb8);
+      color: #fff;
+    }
+    .btn-primary:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-primary:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168,139,175,0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #f0f0f0;
+      border: 1.5px solid rgba(255,255,255,0.35);
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ===== Result Page ===== */
+    .result-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 28px;
+      text-align: center;
+      background: linear-gradient(135deg, #e8d0ff 0%, #ffffff 30%, #c8d8ff 55%, #f0d0ff 80%, #d0e8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 18px rgba(160,130,255,0.35));
+    }
+
+    /* Venn Circles */
+    .venn-container {
+      position: relative;
+      width: 280px;
+      height: 250px;
+      margin-bottom: 28px;
+    }
+    .circle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .circle:nth-child(1) {
+      top: 0; left: 50%; transform: translateX(-50%);
+      animation-delay: 0s;
+    }
+    .circle:nth-child(2) {
+      bottom: 0; left: 5%;
+      animation-delay: 0.18s;
+    }
+    .circle:nth-child(3) {
+      bottom: 0; right: 5%;
+      animation-delay: 0.36s;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 0.72; }
+    }
+    .circle:nth-child(1) {
+      animation-name: fadeInUpCenter;
+    }
+    @keyframes fadeInUpCenter {
+      from { opacity: 0; top: 24px; left: 50%; transform: translateX(-50%); }
+      to   { opacity: 0.72; top: 0; left: 50%; transform: translateX(-50%); }
+    }
+
+    /* Description */
+    .description {
+      max-width: 480px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.82);
+      text-align: center;
+      margin-bottom: 28px;
+      padding: 0 8px;
+    }
+
+    /* Info Boxes */
+    .info-boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .info-box {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 18px 16px;
+    }
+    .info-box-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(200,210,240,0.7);
+      letter-spacing: 1px;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+      margin: -18px -16px 12px -16px;
+      padding: 14px 16px 10px;
+      border-radius: 14px 14px 0 0;
+    }
+    .info-box-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.88);
+    }
+    .info-box-item {
+      margin-bottom: 8px;
+    }
+    .info-box-item:last-child {
+      margin-bottom: 0;
+    }
+    .info-box-item .item-name {
+      color: rgba(200,180,255,0.9);
+      font-weight: 600;
+    }
+    .info-box-item .item-desc {
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+    }
+
+    /* Result CTA */
+    .result-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .result-buttons .btn {
+      min-width: 140px;
+    }
+
+    .btn-restart {
+      margin-top: 20px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .btn-restart:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      padding: 10px 28px;
+      border-radius: 24px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.35s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 420px) {
+      .page { padding: 28px 14px 48px; }
+      .title { font-size: 22px; }
+      .color-grid { gap: 6px; max-width: 340px; }
+      .venn-container { width: 240px; height: 215px; }
+      .circle { width: 125px; height: 125px; font-size: 12px; }
+    }
+    @media (max-width: 340px) {
+      .color-grid { gap: 4px; max-width: 300px; }
+      .circle { width: 110px; height: 110px; }
+      .venn-container { width: 210px; height: 190px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Page 1: Color Selection ===== -->
+  <div id="page-select" class="page active visible">
+    <h1 class="title">你最近的色彩能量</h1>
+    <p class="subtitle">請挑選 3 種你現在最有感覺的色彩</p>
+    <div class="selection-count" id="selectionCount"></div>
+    <div class="color-grid" id="colorGrid"></div>
+    <button class="btn btn-primary" id="btnConfirm" disabled>選定</button>
+  </div>
+
+  <!-- ===== Page 2: Results ===== -->
+  <div id="page-result" class="page">
+    <h2 class="result-title">你最近的色彩能量</h2>
+    <div class="venn-container" id="vennContainer">
+      <div class="circle" id="circle0"></div>
+      <div class="circle" id="circle1"></div>
+      <div class="circle" id="circle2"></div>
+    </div>
+    <div class="description" id="resultDesc"></div>
+    <div class="info-boxes">
+      <div class="info-box">
+        <div class="info-box-title">身體缺乏的能量</div>
+        <div class="info-box-content" id="boxLack"></div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">你該補充的營養素</div>
+        <div class="info-box-content" id="boxSupplement"></div>
+      </div>
+    </div>
+    <div class="result-buttons">
+      <button class="btn btn-outline" id="btnShare">分享</button>
+      <a class="btn btn-primary" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">去看看</a>
+    </div>
+    <button class="btn-restart" id="btnRestart" style="display:none;">我也要測</button>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">已複製連結！</div>
+
+<script>
+// ===== 36 Morandi Colors Data =====
+const COLORS = [
+  // Row 1: 粉紅/珊瑚/紅系 — 愛、溫暖、關懷
+  { hex: '#D4918F', name: '珊瑚紅', energy: '溫柔與自我關愛', lack: '容易感到疲倦，臉色蒼白氣色差', supplements: [
+    { name: '鐵質補充錠', desc: '幫助紅血球生成，改善氣色與體力' },
+    { name: 'B群', desc: '促進能量代謝，趕走疲倦感' },
+  ]},
+  { hex: '#C2A0A0', name: '玫瑰粉', energy: '包容與療癒', lack: '皮膚暗沉無光、容易乾燥脫皮', supplements: [
+    { name: '膠原蛋白飲', desc: '維持肌膚彈性與水潤光澤' },
+    { name: '維生素C', desc: '促進膠原蛋白合成，抗氧化亮白' },
+  ]},
+  { hex: '#B07872', name: '乾燥玫瑰', energy: '感性與共鳴', lack: '經期不順、容易頭暈目眩', supplements: [
+    { name: '葉酸', desc: '支持造血功能，維護女性生理機能' },
+    { name: '鐵質', desc: '補充經期流失，緩解頭暈不適' },
+  ]},
+  { hex: '#E8C4B8', name: '蜜桃粉', energy: '安心與歸屬', lack: '晚上翻來覆去睡不好、淺眠易醒', supplements: [
+    { name: '鈣片', desc: '穩定神經系統，幫助肌肉放鬆入眠' },
+    { name: '維生素D', desc: '提升鈣質吸收，調節睡眠荷爾蒙' },
+  ]},
+  { hex: '#C97B6B', name: '赤陶紅', energy: '溫暖與信任', lack: '情緒起伏大、容易感到焦慮不安', supplements: [
+    { name: '魚油', desc: '富含Omega-3，穩定情緒與神經傳導' },
+    { name: '維生素E', desc: '強效抗氧化，保護神經細胞健康' },
+  ]},
+  { hex: '#A67F78', name: '焦糖玫瑰', energy: '自信與魅力', lack: '掉髮變多、指甲容易斷裂', supplements: [
+    { name: '鋅錠', desc: '促進毛髮生長與指甲修復再生' },
+    { name: '維生素A', desc: '維護皮膚與毛囊細胞正常代謝' },
+  ]},
+
+  // Row 2: 橘/暖棕系 — 穩定、踏實、安全感
+  { hex: '#D4A574', name: '琥珀橘', energy: '踏實與安定', lack: '消化不順、脹氣便秘是日常', supplements: [
+    { name: '益生菌', desc: '平衡腸道菌叢，改善消化與排便' },
+    { name: '纖維粉', desc: '增加膳食纖維攝取，促進腸道蠕動' },
+  ]},
+  { hex: '#C8B494', name: '燕麥色', energy: '沉穩與可靠', lack: '肩頸僵硬痠痛、全身緊繃', supplements: [
+    { name: 'B群', desc: '維護神經系統健康，緩解肌肉緊繃' },
+    { name: '鎂錠', desc: '天然肌肉放鬆劑，舒緩僵硬痠痛' },
+  ]},
+  { hex: '#B8956E', name: '肉桂棕', energy: '舒適與滿足', lack: '下午就開始沒精神、體力不夠用', supplements: [
+    { name: '高蛋白粉', desc: '補充優質蛋白，維持全天候體力' },
+    { name: 'B群', desc: '加速能量轉換，告別午後昏沉' },
+  ]},
+  { hex: '#D4B896', name: '奶茶色', energy: '務實與行動力', lack: '常常覺得沒有活力、提不起勁', supplements: [
+    { name: '鐵質補充', desc: '改善血氧運輸，讓身體重拾活力' },
+    { name: '葉酸', desc: '參與紅血球生成，提升整體精神' },
+  ]},
+  { hex: '#A08868', name: '核桃棕', energy: '堅韌與毅力', lack: '天氣一變就感冒、免疫力低落', supplements: [
+    { name: '鋅錠', desc: '強化免疫細胞活性，提升防禦力' },
+    { name: '魚油', desc: '調節發炎反應，增強身體抵抗力' },
+  ]},
+  { hex: '#C4A882', name: '沙漠金', energy: '包容與耐心', lack: '骨頭關節容易不舒服、蹲下站不起來', supplements: [
+    { name: '鈣片', desc: '維持骨骼密度，保護關節健康' },
+    { name: '維生素K', desc: '幫助鈣質沉積於骨骼，強化骨質' },
+  ]},
+
+  // Row 3: 黃/黃綠系 — 智慧、清晰、成長
+  { hex: '#D4CC88', name: '芥末黃', energy: '理性與清晰', lack: '腦袋常常當機、反應變慢', supplements: [
+    { name: 'B群', desc: '維持腦部神經傳導，提升思考靈活度' },
+    { name: '卵磷脂', desc: '補充大腦磷脂質，改善認知反應' },
+  ]},
+  { hex: '#A8B078', name: '鼠尾草', energy: '成長與智慧', lack: '壓力大到喘不過氣、肌肉緊繃', supplements: [
+    { name: '維生素E', desc: '保護細胞不受壓力傷害，抗氧化' },
+    { name: '鎂錠', desc: '放鬆神經與肌肉，緩解壓力反應' },
+  ]},
+  { hex: '#8EA858', name: '苔蘚綠', energy: '探索與好奇', lack: '眼睛容易酸澀疲勞、看東西模糊', supplements: [
+    { name: '葉黃素', desc: '保護黃斑部，減少藍光對眼睛傷害' },
+    { name: '維生素A', desc: '維護視網膜健康，改善夜間視力' },
+  ]},
+  { hex: '#C8D4A0', name: '嫩芽綠', energy: '希望與新生', lack: '換季就過敏、皮膚癢個不停', supplements: [
+    { name: '維生素C', desc: '增強免疫力，降低過敏發炎反應' },
+    { name: '鋅錠', desc: '修復皮膚屏障，減緩搔癢不適' },
+  ]},
+  { hex: '#D8D8B4', name: '抹茶奶', energy: '和諧與平衡', lack: '心情煩躁、難以放鬆入睡', supplements: [
+    { name: '茶胺酸', desc: '促進放鬆腦波，安定心情助好眠' },
+    { name: 'B群', desc: '穩定神經系統，緩解煩躁與焦慮' },
+  ]},
+  { hex: '#8C9468', name: '橄欖綠', energy: '專注與深思', lack: '注意力無法集中、記憶力下降', supplements: [
+    { name: '魚油DHA', desc: '滋養腦部細胞膜，提升專注與記憶' },
+    { name: '維生素D', desc: '調節腦部神經傳導，改善認知功能' },
+  ]},
+
+  // Row 4: 綠/青系 — 療癒、平衡、更新
+  { hex: '#68A888', name: '湖水綠', energy: '療癒與修復', lack: '傷口好得慢、身體修復力差', supplements: [
+    { name: '維生素C', desc: '加速膠原蛋白合成，促進傷口癒合' },
+    { name: '膠原蛋白', desc: '修復組織結構，增強皮膚再生力' },
+  ]},
+  { hex: '#88C4A8', name: '薄荷綠', energy: '淨化與重生', lack: '身體常感覺沉重、代謝變慢', supplements: [
+    { name: '益生菌', desc: '改善腸道環境，促進營養吸收代謝' },
+    { name: '纖維粉', desc: '幫助排除體內廢物，減輕身體負擔' },
+  ]},
+  { hex: '#4E8868', name: '森林綠', energy: '生命力與韌性', lack: '爬個樓梯就喘、耐力明顯下降', supplements: [
+    { name: '鐵質', desc: '提升血液攜氧量，改善體力與耐力' },
+    { name: '綠藻錠', desc: '富含葉綠素與鐵質，全面補充活力' },
+  ]},
+  { hex: '#78B8A0', name: '翡翠霧', energy: '慈悲與寬容', lack: '經常偏頭痛、眼壓高不舒服', supplements: [
+    { name: '鎂錠', desc: '舒緩血管緊張，減少偏頭痛發作' },
+    { name: 'B群', desc: '維護神經健康，緩解壓力性頭痛' },
+  ]},
+  { hex: '#3E7E68', name: '松柏綠', energy: '穩固與扎根', lack: '腰痠背痛、姿勢不良全身不對勁', supplements: [
+    { name: '鈣片', desc: '強化骨骼與肌肉支撐，減少痠痛' },
+    { name: '維生素D', desc: '促進鈣吸收，維持骨骼肌肉功能' },
+  ]},
+  { hex: '#A0D4C0', name: '玉石綠', energy: '純淨與澄明', lack: '氣色差、看起來比實際年齡老', supplements: [
+    { name: '維生素E', desc: '強效抗氧化，延緩細胞老化跡象' },
+    { name: '硒錠', desc: '保護細胞免受自由基傷害，回春光澤' },
+  ]},
+
+  // Row 5: 藍/靛系 — 平靜、溝通、智慧
+  { hex: '#6888A8', name: '霧藍', energy: '冷靜與沉思', lack: '思緒停不下來、焦慮到無法入眠', supplements: [
+    { name: '魚油', desc: '穩定腦部神經，緩解焦慮與過度思考' },
+    { name: '鎂錠', desc: '放鬆神經系統，幫助進入深層睡眠' },
+  ]},
+  { hex: '#88B0C8', name: '天空藍', energy: '自由與開闊', lack: '情緒低落、提不起精神面對每一天', supplements: [
+    { name: '維生素D', desc: '調節血清素分泌，改善低落情緒' },
+    { name: '鈣片', desc: '穩定神經傳導，幫助維持正向心情' },
+  ]},
+  { hex: '#5888A0', name: '石板藍', energy: '理性與表達', lack: '喉嚨常發炎、身體小毛病不斷', supplements: [
+    { name: 'B群', desc: '維持黏膜健康，增強身體基礎防護' },
+    { name: '鋅錠', desc: '加速免疫反應，減少反覆感染發炎' },
+  ]},
+  { hex: '#94A8C4', name: '月光藍', energy: '寧靜與內省', lack: '睡眠品質差、白天昏昏沉沉', supplements: [
+    { name: '茶胺酸', desc: '提升睡眠品質，讓大腦真正休息' },
+    { name: '鎂錠', desc: '調節睡眠週期，減少夜間醒來次數' },
+  ]},
+  { hex: '#4878A0', name: '深海藍', energy: '深度與洞察', lack: '腦霧嚴重、感覺越來越健忘', supplements: [
+    { name: '魚油DHA', desc: '修復腦神經細胞，找回清晰思路' },
+    { name: 'B12', desc: '維持神經髓鞘完整，改善記憶力' },
+  ]},
+  { hex: '#788898', name: '暮色灰', energy: '沉穩與包容', lack: '日夜顛倒、作息亂到影響生活', supplements: [
+    { name: 'GABA', desc: '天然神經鎮靜劑，幫助重建作息規律' },
+    { name: '鎂錠', desc: '調節生理時鐘，讓身體回歸自然節奏' },
+  ]},
+
+  // Row 6: 紫/薰衣草系 — 直覺、創意、靈性
+  { hex: '#9878A8', name: '薰衣草', energy: '直覺與靈感', lack: '壓力大到失眠、夜晚腦袋轉不停', supplements: [
+    { name: 'B群', desc: '緩解壓力對神經的消耗，安定心神' },
+    { name: '鎂錠', desc: '放鬆大腦與肌肉，讓思緒安靜下來' },
+  ]},
+  { hex: '#B898B8', name: '丁香紫', energy: '創意與想像', lack: '免疫力下降、動不動就生病', supplements: [
+    { name: '維生素C', desc: '提升白血球活性，強化免疫防線' },
+    { name: '鋅錠', desc: '支持免疫細胞生成，縮短感冒病程' },
+  ]},
+  { hex: '#7E5888', name: '莓果紫', energy: '轉化與蛻變', lack: '身體容易發炎、這裡痛那裡痛', supplements: [
+    { name: '莓果萃取', desc: '富含花青素，抗發炎與氧化雙效合一' },
+    { name: '維生素E', desc: '抑制發炎反應，減輕身體慢性不適' },
+  ]},
+  { hex: '#A880B8', name: '紫藤花', energy: '夢想與願景', lack: '孕期或備孕中、擔心營養不足', supplements: [
+    { name: '魚油DHA', desc: '支持胎兒腦部發育，孕期必備營養' },
+    { name: '葉酸', desc: '預防神經管缺陷，守護母嬰健康' },
+  ]},
+  { hex: '#C8A0C8', name: '粉紫霧', energy: '浪漫與感知', lack: '冬天手腳冰冷、循環不好', supplements: [
+    { name: '魚油', desc: '促進血液循環，改善末梢冰冷問題' },
+    { name: '維生素D', desc: '調節免疫與循環系統，溫暖由內而外' },
+  ]},
+  { hex: '#685878', name: '暗夜紫', energy: '神秘與覺醒', lack: '生理時鐘大亂、怎麼睡都覺得累', supplements: [
+    { name: 'GABA', desc: '抑制過度興奮的神經，重建深層睡眠' },
+    { name: 'B12', desc: '維護神經系統，改善慢性疲勞症候' },
+  ]},
+];
+
+// ===== State =====
+let selectedIndices = [];
+let isSharedView = false;
+
+// ===== DOM Elements =====
+const pageSelect  = document.getElementById('page-select');
+const pageResult  = document.getElementById('page-result');
+const colorGrid   = document.getElementById('colorGrid');
+const selCount    = document.getElementById('selectionCount');
+const btnConfirm  = document.getElementById('btnConfirm');
+const btnShare    = document.getElementById('btnShare');
+const btnRestart  = document.getElementById('btnRestart');
+const toastEl     = document.getElementById('toast');
+
+// ===== Render Color Grid =====
+COLORS.forEach((c, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'color-cell';
+  cell.style.backgroundColor = c.hex;
+  cell.dataset.index = i;
+  cell.addEventListener('click', () => toggleColor(i, cell));
+  colorGrid.appendChild(cell);
+});
+
+// ===== Selection Logic =====
+function toggleColor(index, cell) {
+  const pos = selectedIndices.indexOf(index);
+  if (pos !== -1) {
+    // Deselect
+    selectedIndices.splice(pos, 1);
+    cell.classList.remove('selected');
+  } else if (selectedIndices.length < 3) {
+    // Select
+    selectedIndices.push(index);
+    cell.classList.add('selected');
+  }
+  updateSelectionUI();
+}
+
+function updateSelectionUI() {
+  const n = selectedIndices.length;
+  selCount.textContent = n > 0 ? `已選 ${n} / 3` : '';
+  selCount.classList.toggle('ready', n === 3);
+  btnConfirm.disabled = n !== 3;
+}
+
+// ===== Page Transitions =====
+function showPage(show, hide) {
+  hide.classList.remove('visible');
+  setTimeout(() => {
+    hide.classList.remove('active');
+    show.classList.add('active');
+    // Force reflow so the transition works
+    show.offsetHeight;
+    show.classList.add('visible');
+    window.scrollTo(0, 0);
+  }, 460);
+}
+
+// ===== Result Rendering =====
+function renderResult() {
+  const colors = selectedIndices.map(i => COLORS[i]);
+
+  // Venn circles
+  colors.forEach((c, i) => {
+    const el = document.getElementById('circle' + i);
+    el.style.backgroundColor = c.hex;
+    el.textContent = c.name;
+    // Reset animation
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = '';
+  });
+
+  // Description
+  document.getElementById('resultDesc').textContent =
+    `你目前的能量狀態融合了「${colors[0].energy}」、「${colors[1].energy}」與「${colors[2].energy}」。` +
+    `這反映出你的身心正在尋求內在的平衡與和諧，同時也渴望由內而外的滋養與修復。`;
+
+  // Life pain points (each color has a unique sentence)
+  const lackEl = document.getElementById('boxLack');
+  lackEl.innerHTML = colors.map(c => `• ${c.lack}`).join('<br>');
+
+  // Supplements (deduplicated by name, keep desc)
+  const seen = new Set();
+  const supps = [];
+  colors.forEach(c => {
+    c.supplements.forEach(s => {
+      if (!seen.has(s.name)) { seen.add(s.name); supps.push(s); }
+    });
+  });
+  document.getElementById('boxSupplement').innerHTML = supps
+    .map(s => `<div class="info-box-item">• <span class="item-name">${s.name}</span><br><span class="item-desc">${s.desc}</span></div>`)
+    .join('');
+}
+
+// ===== Share =====
+btnShare.addEventListener('click', () => {
+  const params = selectedIndices.join(',');
+  const url = `${location.origin}${location.pathname}?c=${params}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => showToast('已複製連結！'));
+  } else {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('已複製連結！');
+  }
+});
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2000);
+}
+
+// ===== Confirm Button =====
+btnConfirm.addEventListener('click', () => {
+  if (selectedIndices.length !== 3) return;
+  renderResult();
+  showPage(pageResult, pageSelect);
+});
+
+// ===== Restart =====
+btnRestart.addEventListener('click', () => {
+  history.replaceState(null, '', location.pathname);
+  selectedIndices = [];
+  // Clear grid selections
+  colorGrid.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+  updateSelectionUI();
+  showPage(pageSelect, pageResult);
+  btnRestart.style.display = 'none';
+});
+
+// ===== Check Shared Link on Load =====
+(function checkSharedLink() {
+  const params = new URLSearchParams(location.search);
+  const c = params.get('c');
+  if (c) {
+    const indices = c.split(',').map(Number);
+    if (indices.length === 3 && indices.every(i => Number.isInteger(i) && i >= 0 && i < 36)) {
+      selectedIndices = indices;
+      isSharedView = true;
+      renderResult();
+      // Show result directly
+      pageSelect.classList.remove('active', 'visible');
+      pageResult.classList.add('active');
+      requestAnimationFrame(() => {
+        pageResult.classList.add('visible');
+      });
+      btnRestart.style.display = 'block';
+    }
+  }
+})();
+</script>
+</body>
+</html>
