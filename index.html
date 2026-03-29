@@ -356,17 +356,20 @@
     }
 
     .btn-restart {
-      margin-top: 20px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
+      margin-top: 30px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
       background: none;
       border: none;
       cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.3s;
     }
     .btn-restart:hover {
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.55);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     /* ===== Toast ===== */
@@ -438,7 +441,7 @@
       <button class="btn btn-outline" id="btnShare">分享</button>
       <a class="btn btn-primary" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">去看看</a>
     </div>
-    <button class="btn-restart" id="btnRestart" style="display:none;">我也要測</button>
+    <button class="btn-restart" id="btnRestart" style="display:none;">← 重新選擇色彩</button>
   </div>
 
   <!-- Toast -->
@@ -730,6 +733,7 @@ btnConfirm.addEventListener('click', () => {
   if (selectedIndices.length !== 3) return;
   renderResult();
   showPage(pageResult, pageSelect);
+  btnRestart.style.display = 'block';
 });
 
 // ===== Restart =====
