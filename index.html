@@ -95,6 +95,44 @@
       z-index: 0;
     }
 
+    /* ===== Twinkling Stars ===== */
+    .twinkle-star {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      animation: twinkle 2.2s ease-in-out forwards;
+    }
+    .twinkle-star svg {
+      display: block;
+      filter: drop-shadow(0 0 4px currentColor);
+    }
+    @keyframes twinkle {
+      0%   { opacity: 0; transform: scale(0.2) rotate(0deg); }
+      30%  { opacity: 1; transform: scale(1.1) rotate(15deg); }
+      50%  { opacity: 0.7; transform: scale(0.9) rotate(-10deg); }
+      70%  { opacity: 1; transform: scale(1.05) rotate(5deg); }
+      100% { opacity: 0; transform: scale(0.15) rotate(0deg); }
+    }
+
+    /* ===== Cofit Logo ===== */
+    .brand-logo {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 8px;
+      opacity: 0.75;
+      transition: opacity 0.3s;
+    }
+    .brand-logo:hover {
+      opacity: 1;
+    }
+    .brand-logo img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
     /* ===== Page Containers ===== */
     .page {
       display: none;
@@ -411,6 +449,9 @@
 
   <!-- ===== Page 1: Color Selection ===== -->
   <div id="page-select" class="page active visible">
+    <a class="brand-logo" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">
+      <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=feversocial%2F35653%2F37772%2Fb705f7547aa16424ed6ddebc.png" alt="Cofit">
+    </a>
     <h1 class="title">你最近的色彩能量</h1>
     <p class="subtitle">請挑選 3 種你現在最有感覺的色彩</p>
     <div class="selection-count" id="selectionCount"></div>
@@ -420,6 +461,9 @@
 
   <!-- ===== Page 2: Results ===== -->
   <div id="page-result" class="page">
+    <a class="brand-logo" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">
+      <img src="https://image.fevercdn.com?bucket=picture-original.fevercdn.com&filepath=feversocial%2F35653%2F37772%2Fb705f7547aa16424ed6ddebc.png" alt="Cofit">
+    </a>
     <h2 class="result-title">你最近的色彩能量</h2>
     <div class="venn-container" id="vennContainer">
       <div class="circle" id="circle0"></div>
@@ -439,7 +483,7 @@
     </div>
     <div class="result-buttons">
       <button class="btn btn-outline" id="btnShare">分享</button>
-      <a class="btn btn-primary" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">去看看</a>
+      <a class="btn btn-primary" href="https://shop.cofit.me/pc/home" target="_blank" rel="noopener">補充解方</a>
     </div>
     <button class="btn-restart" id="btnRestart" style="display:none;">← 重新選擇色彩</button>
   </div>
@@ -459,9 +503,9 @@ const COLORS = [
     { name: '膠原蛋白飲', desc: '維持肌膚彈性與水潤光澤' },
     { name: '維生素C', desc: '促進膠原蛋白合成，抗氧化亮白' },
   ]},
-  { hex: '#B07872', name: '乾燥玫瑰', energy: '感性與共鳴', lack: '經期不順、容易頭暈目眩', supplements: [
-    { name: '葉酸', desc: '支持造血功能，維護女性生理機能' },
-    { name: '鐵質', desc: '補充經期流失，緩解頭暈不適' },
+  { hex: '#B07872', name: '乾燥玫瑰', energy: '感性與共鳴', lack: '容易頭暈目眩、蹲下站起來會眼前一黑', supplements: [
+    { name: '葉酸', desc: '支持造血功能，改善貧血與暈眩' },
+    { name: '鐵質', desc: '提升血紅素濃度，緩解頭暈不適' },
   ]},
   { hex: '#E8C4B8', name: '蜜桃粉', energy: '安心與歸屬', lack: '晚上翻來覆去睡不好、淺眠易醒', supplements: [
     { name: '鈣片', desc: '穩定神經系統，幫助肌肉放鬆入眠' },
@@ -593,9 +637,9 @@ const COLORS = [
     { name: '莓果萃取', desc: '富含花青素，抗發炎與氧化雙效合一' },
     { name: '維生素E', desc: '抑制發炎反應，減輕身體慢性不適' },
   ]},
-  { hex: '#A880B8', name: '紫藤花', energy: '夢想與願景', lack: '孕期或備孕中、擔心營養不足', supplements: [
-    { name: '魚油DHA', desc: '支持胎兒腦部發育，孕期必備營養' },
-    { name: '葉酸', desc: '預防神經管缺陷，守護母嬰健康' },
+  { hex: '#A880B8', name: '紫藤花', energy: '夢想與願景', lack: '容易感到全身無力、做什麼都提不起勁', supplements: [
+    { name: '魚油DHA', desc: '滋養腦部細胞，提升動力與專注力' },
+    { name: '葉酸', desc: '促進紅血球生成，改善倦怠無力感' },
   ]},
   { hex: '#C8A0C8', name: '粉紫霧', energy: '浪漫與感知', lack: '冬天手腳冰冷、循環不好', supplements: [
     { name: '魚油', desc: '促進血液循環，改善末梢冰冷問題' },
@@ -681,10 +725,15 @@ function renderResult() {
     el.style.animation = '';
   });
 
-  // Description
-  document.getElementById('resultDesc').textContent =
-    `你目前的能量狀態融合了「${colors[0].energy}」、「${colors[1].energy}」與「${colors[2].energy}」。` +
-    `這反映出你的身心正在尋求內在的平衡與和諧，同時也渴望由內而外的滋養與修復。`;
+  // Description — varied templates to avoid repetition
+  const descTemplates = [
+    `你被「${colors[0].energy}」、「${colors[1].energy}」與「${colors[2].energy}」的能量所吸引。這代表你的內在正渴望一種深層的修復與重整，身體也在悄悄發出需要被關注的訊號。`,
+    `「${colors[0].energy}」、「${colors[1].energy}」與「${colors[2].energy}」交織出你此刻的能量圖譜。你的身心正處於轉變的階段，適時補充對的養分，能幫助你更快找回最佳狀態。`,
+    `你選擇了「${colors[0].energy}」、「${colors[1].energy}」和「${colors[2].energy}」，這三股能量揭示了你目前最需要被照顧的面向。聆聽身體的聲音，給自己一份由內而外的滋養吧。`,
+    `「${colors[0].energy}」、「${colors[1].energy}」、「${colors[2].energy}」——這是你的潛意識正在呼喚的力量。當這些能量不足時，身體往往會透過各種小訊號來提醒你，是時候好好補充了。`,
+  ];
+  const descIndex = (selectedIndices[0] + selectedIndices[1] + selectedIndices[2]) % descTemplates.length;
+  document.getElementById('resultDesc').textContent = descTemplates[descIndex];
 
   // Life pain points (each color has a unique sentence)
   const lackEl = document.getElementById('boxLack');
@@ -767,6 +816,47 @@ btnRestart.addEventListener('click', () => {
     }
   }
 })();
+
+// ===== Twinkling Stars Animation =====
+const starColors = [
+  'rgba(255,255,255,0.9)',
+  'rgba(200,210,255,0.85)',
+  'rgba(255,220,200,0.8)',
+  'rgba(220,200,255,0.85)',
+  'rgba(200,255,240,0.8)',
+  'rgba(255,240,200,0.8)',
+  'rgba(180,200,255,0.85)',
+];
+
+function createTwinkleStar() {
+  const star = document.createElement('div');
+  star.className = 'twinkle-star';
+  const x = Math.random() * 100;
+  const y = Math.random() * 100;
+  const size = 10 + Math.random() * 14;
+  const color = starColors[Math.floor(Math.random() * starColors.length)];
+  star.style.left = x + '%';
+  star.style.top = y + '%';
+  star.style.color = color;
+  // Sharp 4-pointed star SVG
+  star.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 0 L13.5 9.5 L24 12 L13.5 14.5 L12 24 L10.5 14.5 L0 12 L10.5 9.5 Z"/>
+  </svg>`;
+  document.body.appendChild(star);
+  star.addEventListener('animationend', () => star.remove());
+}
+
+// Create stars at staggered intervals — roughly every 3 seconds, 2-3 stars each burst
+setInterval(() => {
+  const count = 2 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < count; i++) {
+    setTimeout(createTwinkleStar, Math.random() * 800);
+  }
+}, 3000);
+// Initial burst
+for (let i = 0; i < 3; i++) {
+  setTimeout(createTwinkleStar, 500 + Math.random() * 1500);
+}
 </script>
 </body>
 </html>
